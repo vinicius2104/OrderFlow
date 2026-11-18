@@ -1,0 +1,359 @@
+{
+  "info": {
+    "_postman_id": "96226501-4fc5-4fcf-88c4-769d02c95900",
+    "name": "OrderFlow API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "45131739"
+  },
+  "item": [
+    {
+      "name": "CT01 - Login Válido",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const resposta = pm.response.json();",
+              "pm.collectionVariables.set(\"accessToken\", resposta.accessToken);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"cliente@hotmail.com\",\n  \"senha\": \"senha@123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseurl}}/api/Auth/login",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "api",
+            "Auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CT02 - Listar Produtos",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{baseurl}}/api/Produtos",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "api",
+            "Produtos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CT03 - Cadastrar Produto",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Produto Teste\",\n  \"descricao\": \"Produto para teste da API\",\n  \"preco\": 50.00\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseurl}}/api/Produtos",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "api",
+            "Produtos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CT04 - Criar pedido com estoque disponivel e pagamento aprovado",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"unidadeId\": 1,\n  \"clienteId\": null,\n  \"canalPedido\": \"BALCAO\",\n  \"chaveIdempotencia\": \"CT04-001\",\n  \"itens\": [\n    {\n      \"produtoId\": 1,\n      \"quantidade\": 1\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseurl}}/api/Pedidos",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "api",
+            "Pedidos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CT05  - Pagamento recusado",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"unidadeId\": 1,\n  \"clienteId\": null,\n  \"canalPedido\": \"BALCAO\",\n  \"chaveIdempotencia\": \"CT05-001\",\n  \"itens\": [\n    {\n      \"produtoId\": 2,\n      \"quantidade\": 300\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseurl}}/api/Pedidos",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "api",
+            "Pedidos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CT06 - Consultar produto por ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseurl}}/api/Produtos/1",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "api",
+            "Produtos",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CT07 - Acesso sem token",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"unidadeId\": 1,\n  \"clienteId\": null,\n  \"canalPedido\": \"BALCAO\",\n  \"chaveIdempotencia\": \"CT07-001\",\n  \"itens\": [\n    {\n      \"produtoId\": 1,\n      \"quantidade\": 1\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseurl}}/api/Pedidos",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "api",
+            "Pedidos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CT08 - Acesso sem permissão",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Produto Teste\",\n  \"descricao\": \"Produto para teste da API\",\n  \"preco\": 50.00\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseurl}}/api/Produtos",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "api",
+            "Produtos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CT09 - Pedido sem canal",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"unidadeId\": 1,\n  \"clienteId\": null,\n  \"canalPedido\": null,\n  \"chaveIdempotencia\": \"CT09-001\",\n  \"itens\": [\n    {\n      \"produtoId\": 1,\n      \"quantidade\": 1\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseurl}}/api/Pedidos",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "api",
+            "Pedidos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CT10 - Produto inexistente",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"unidadeId\": 1,\n  \"clienteId\": null,\n  \"canalPedido\": \"BALCAO\",\n  \"chaveIdempotencia\": \"CT10-001\",\n  \"itens\": [\n    {\n      \"produtoId\": 15,\n      \"quantidade\": 1\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseurl}}/api/Pedidos",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "api",
+            "Pedidos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CT11 - Estoque insuficiente",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"unidadeId\": 1,\n  \"clienteId\": null,\n  \"canalPedido\": \"BALCAO\",\n  \"chaveIdempotencia\": \"CT11-001\",\n  \"itens\": [\n    {\n      \"produtoId\": 1,\n      \"quantidade\": 1000\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseurl}}/api/Pedidos",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "api",
+            "Pedidos"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseurl",
+      "value": ""
+    },
+    {
+      "key": "accessToken",
+      "secret": true
+    }
+  ]
+}
