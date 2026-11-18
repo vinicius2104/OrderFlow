@@ -119,7 +119,7 @@ OrderFlow/
 │   ├── OrderFlow.Domain/
 │   └── OrderFlow.Infrastructure/
 ├── tests/
-├── OrderFlow.sln
+├── OrderFlow.slnx
 ├── OrderFlow_API.postman_collection.json
 └── README.md
 ```
