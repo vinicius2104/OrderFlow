@@ -1,0 +1,15 @@
+# .NET
+bin/
+obj/
+
+# User Secrets e configurações locais
+appsettings.Development.json
+secrets.json
+
+# IDE
+.vs/
+.vscode/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
