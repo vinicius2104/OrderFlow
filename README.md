@@ -118,11 +118,15 @@ OrderFlow/
 │   ├── OrderFlow.Application/
 │   ├── OrderFlow.Domain/
 │   └── OrderFlow.Infrastructure/
-├── tests/
 ├── OrderFlow.slnx
 ├── OrderFlow_API.postman_collection.json
 └── README.md
 ```
+## Links do projeto
+
+- **Repositório GitHub:** https://github.com/vinicius2104/OrderFlow
+- **Coleção Postman:** disponível no arquivo `OrderFlow_API.postman_collection.json` na raiz do repositório.
+- **Swagger / OpenAPI:** disponível localmente em `http://localhost:xxxx/swagger` após iniciar a API.
 
 ## Projeto acadêmico
 
