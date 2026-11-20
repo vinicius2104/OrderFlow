@@ -45,11 +45,13 @@ OrderFlow/
 
 ## Requisitos
 
-Para executar o projeto, é necessário ter instalado:
+Antes de executar o projeto, é necessário instalar:
 
-- .NET 10 SDK
-- Docker
-- Docker Compose
+- **.NET 10 SDK:** para compilar e executar a API.
+- **Docker Desktop ou Docker Engine:** para executar o banco de dados PostgreSQL em um container.
+- **Docker Compose:** para gerenciar a inicialização do banco de dados. Nas versões atuais do Docker, já está integrado como `docker compose`.
+
+**Importante:** o Docker precisa estar instalado e em execução antes de iniciar o banco de dados. Não é necessário instalar o PostgreSQL separadamente, pois ele será executado automaticamente pelo Docker Compose.
 
 ## Configuração do ambiente
 
