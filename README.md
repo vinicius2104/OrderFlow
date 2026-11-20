@@ -1,113 +1,18 @@
 # OrderFlow API
 
-API REST para gerenciamento de produtos, unidades, estoque e pedidos, desenvolvida como projeto acadêmico do curso de Análise e Desenvolvimento de Sistemas.
+API REST desenvolvida em C# com ASP.NET Core e PostgreSQL para gerenciamento de pedidos, produtos, estoque e pagamentos da rede fictícia Raízes do Nordeste.
 
 ## Tecnologias utilizadas
 
 - C#
-- ASP.NET Core (.NET 10)
+- .NET 10
+- ASP.NET Core
 - Entity Framework Core
-- PostgreSQL
-- JWT para autenticação
-- Swagger / OpenAPI
-- Docker
-
-## Arquitetura
-
-O projeto utiliza arquitetura em camadas:
-
-- **Domain:** entidades e regras de domínio.
-- **Application:** casos de uso, DTOs e interfaces.
-- **Infrastructure:** persistência de dados e implementações.
-- **API:** endpoints, autenticação e configuração da aplicação.
-
-## Funcionalidades
-
-- Cadastro e autenticação de usuários.
-- Autenticação por JWT.
-- Controle de acesso por perfil.
-- Gerenciamento de produtos e unidades.
-- Consulta e controle de estoque.
-- Criação de pedidos.
-- Reserva e baixa de estoque.
-- Simulação de aprovação e recusa de pagamentos.
-- Registro de auditoria na criação de pedidos.
-
-## Configuração e execução
-
-### Pré-requisitos
-
-- .NET 10 SDK
-- Docker
-- PostgreSQL (ou Docker para executar o banco)
-
-### Banco de dados
-
-O projeto utiliza PostgreSQL 17 executado em um container Docker.
-
-Para criar e iniciar o banco de dados, execute:
-
-```bash
-docker run --name orderflow-postgres \
-  -e POSTGRES_DB=orderflow_db \
-  -e POSTGRES_USER=orderflow \
-  -e POSTGRES_PASSWORD=sua_senha \
-  -p 5432:5432 \
-  -d postgres:17
-```
-
-Substitua `sua_senha` por uma senha de sua escolha.
-
-Configure a connection string da aplicação com os mesmos dados utilizados na criação do container, por meio do User Secrets ou de variáveis de ambiente.
-
-Configure também a chave JWT por meio dessas configurações locais.
-
-Com o banco em execução, aplique as migrations do Entity Framework Core, caso existam pendentes:
-
-```bash
-dotnet tool install --global dotnet-ef
-dotnet ef database update --project src/OrderFlow.Infrastructure --startup-project src/OrderFlow.API
-```
-### Configuração das credenciais
-
-As configurações são armazenadas localmente utilizando o .NET User Secrets, evitando a inclusão de credenciais no código-fonte.
-
-
-Configure a conexão com o banco:
-
-```bash
-dotnet user-secrets set "ConnectionStrings:OrderFlow" "Host=localhost;Port=5432;Database=orderflow_db;Username=orderflow;Password=SUA_SENHA" --project src/OrderFlow.API
-```
-
-Configure a chave JWT e seus identificadores:
-
-```bash
-dotnet user-secrets set "Jwt:Key" "SUA_CHAVE_JWT" --project src/OrderFlow.API
-dotnet user-secrets set "Jwt:Issuer" "OrderFlow" --project src/OrderFlow.API
-dotnet user-secrets set "Jwt:Audience" "OrderFlowClient" --project src/OrderFlow.API
-```
-
-Substitua os valores de exemplo pelas credenciais definidas no ambiente local.
-
-### Executar a API
-
-Na raiz do projeto, execute:
-
-```bash
-dotnet restore
-dotnet build
-dotnet run --project src/OrderFlow.API
-```
-
-Após iniciar a aplicação, acesse a URL local exibida no terminal e acrescente `/swagger` para visualizar a documentação interativa da API.
-
-## Testes
-
-Os testes funcionais foram realizados utilizando Postman, contemplando autenticação, produtos, pedidos, permissões e tratamento de erros.
-
-A coleção está disponível no arquivo:
-
-`OrderFlow_API.postman_collection.json`
+- PostgreSQL 17
+- Docker e Docker Compose
+- JWT (autenticação e autorização)
+- Swagger
+- Postman
 
 ## Estrutura do projeto
 
@@ -118,16 +23,154 @@ OrderFlow/
 │   ├── OrderFlow.Application/
 │   ├── OrderFlow.Domain/
 │   └── OrderFlow.Infrastructure/
+├── docs/
+│   └── OrderFlow_API.postman_collection.json
 ├── OrderFlow.slnx
-├── OrderFlow_API.postman_collection.json
 └── README.md
 ```
-## Links do projeto
 
-- **Repositório GitHub:** https://github.com/vinicius2104/OrderFlow
-- **Coleção Postman:** disponível no arquivo `OrderFlow_API.postman_collection.json` na raiz do repositório.
-- **Swagger / OpenAPI:** disponível localmente em `http://localhost:xxxx/swagger` após iniciar a API.
+## Funcionalidades
 
-## Projeto acadêmico
+- Cadastro e autenticação de usuários.
+- Autenticação com JWT.
+- Controle de acesso por perfil de usuário.
+- Cadastro e gerenciamento de unidades.
+- Cadastro e gerenciamento de produtos.
+- Controle de estoque por unidade.
+- Registro e consulta de pedidos.
+- Identificação do canal de origem dos pedidos.
+- Reserva e baixa de estoque durante o processamento dos pedidos.
+- Simulação de aprovação e recusa de pagamentos.
+- Registro de auditoria das operações.
 
-Desenvolvido como parte do projeto do curso de Análise e Desenvolvimento de Sistemas – UNINTER.
+## Requisitos
+
+Para executar o projeto, é necessário ter instalado:
+
+- .NET 10 SDK
+- Docker
+- Docker Compose
+
+## Configuração do ambiente
+
+### 1. Clonar o repositório
+
+```bash
+git clone https://github.com/vinicius2104/OrderFlow.git
+cd OrderFlow
+```
+
+### 2. Iniciar o banco de dados
+
+Na raiz do projeto, execute:
+
+```bash
+docker compose up -d
+```
+
+O Docker Compose iniciará o PostgreSQL 17 com as seguintes configurações:
+
+- Banco de dados: `orderflow_db`
+- Usuário: `orderflow`
+- Senha: `orderflow_dev_2026`
+- Porta: `5432`
+
+### 3. Configurar as credenciais da aplicação
+
+Configure a connection string utilizando User Secrets:
+
+```bash
+dotnet user-secrets set "ConnectionStrings:OrderFlow" "Host=localhost;Port=5432;Database=orderflow_db;Username=orderflow;Password=orderflow_dev_2026" --project src/OrderFlow.API
+```
+
+Gere uma chave aleatória para o JWT:
+
+```bash
+openssl rand -base64 32
+```
+
+Copie o valor gerado e configure:
+
+```bash
+dotnet user-secrets set "Jwt:Key" "SUA_CHAVE_GERADA" --project src/OrderFlow.API
+dotnet user-secrets set "Jwt:Issuer" "OrderFlow" --project src/OrderFlow.API
+dotnet user-secrets set "Jwt:Audience" "OrderFlowClient" --project src/OrderFlow.API
+```
+
+Substitua `SUA_CHAVE_GERADA` pelo valor obtido no comando anterior.
+
+### 4. Aplicar as migrations
+
+Caso ainda não tenha a ferramenta Entity Framework instalada:
+
+```bash
+dotnet tool install --global dotnet-ef
+```
+
+Execute as migrations para criar as tabelas e inserir os dados iniciais:
+
+```bash
+dotnet ef database update --project src/OrderFlow.Infrastructure --startup-project src/OrderFlow.API
+```
+
+### 5. Executar a API
+
+Na raiz do projeto, execute:
+
+```bash
+dotnet restore
+dotnet build
+dotnet run --project src/OrderFlow.API
+```
+
+## Usuário gestor padrão
+
+O banco de dados já possui um usuário gestor cadastrado automaticamente por meio de uma migration.
+
+**Credenciais de acesso:**
+
+| Campo | Valor |
+|---|---|
+| E-mail | admin@orderflow.com |
+| Senha | Admin@123 |
+| Perfil | GESTOR |
+
+Esse usuário permite acessar os recursos administrativos da API.
+
+
+## Documentação da API
+
+Após iniciar a aplicação, a documentação interativa do Swagger estará disponível em:
+
+```text
+http://localhost:5000/swagger
+```
+
+A porta pode variar conforme a configuração de execução apresentada no terminal.
+
+## Testes com Postman
+
+O projeto disponibiliza uma coleção do Postman com requisições para testar os principais endpoints da API.
+
+Arquivo:
+
+```text
+docs/OrderFlow_API.postman_collection.json
+```
+
+Importe a coleção no Postman para executar as requisições.
+
+## Banco de dados
+
+O PostgreSQL é utilizado para armazenar os dados da aplicação. A estrutura do banco é gerenciada pelo Entity Framework Core por meio de migrations.
+
+O acesso ao banco pode ser realizado utilizando ferramentas como DBeaver.
+
+## Arquitetura
+
+O projeto utiliza arquitetura em camadas, dividida em:
+
+- **API:** responsável pelos endpoints e pela comunicação HTTP.
+- **Application:** contém os serviços e as regras de aplicação.
+- **Domain:** concentra as entidades e regras de negócio.
+- **Infrastructure:** responsável pelo acesso ao banco de dados e pelas implementações de infraestrutura.

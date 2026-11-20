@@ -378,6 +378,18 @@ namespace OrderFlow.Infrastructure.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("usuarios", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Ativo = true,
+                            CriadoEm = new DateTime(2026, 11, 19, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "admin@orderflow.com",
+                            Nome = "Administrador",
+                            Perfil = "GESTOR",
+                            SenhaHash = "AQAAAAIAAYagAAAAECblr9Ez20LGhWMAoOpWxNLMpi2boEOzS1T5W2fQf7NF+4bCDdlZ88mUdhY2IXl9Aw=="
+                        });
                 });
 
             modelBuilder.Entity("OrderFlow.Domain.Entities.Auditoria", b =>

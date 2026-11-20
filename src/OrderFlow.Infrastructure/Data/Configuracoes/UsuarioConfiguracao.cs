@@ -37,5 +37,15 @@ public class UsuarioConfiguracao : IEntityTypeConfiguration<Usuario>
 
         builder.Property(u => u.CriadoEm)
             .IsRequired();
+            builder.HasData(new
+{
+    Id = 1L,
+    Nome = "Administrador",
+    Email = "admin@orderflow.com",
+    SenhaHash = "AQAAAAIAAYagAAAAECblr9Ez20LGhWMAoOpWxNLMpi2boEOzS1T5W2fQf7NF+4bCDdlZ88mUdhY2IXl9Aw==",
+    Perfil = "GESTOR",
+    Ativo = true,
+    CriadoEm = new DateTime(2026, 11, 19, 0, 0, 0, DateTimeKind.Utc)
+});
     }
 }
